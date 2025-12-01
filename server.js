@@ -2,7 +2,7 @@ const path = require("path");
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const errorController = require("./controllers/error.js")
+const errorController = require("./controllers/error.js");
 
 const app = express();
 
@@ -15,7 +15,10 @@ const { error } = require("./controllers/error.js");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/admin", adminRoutes);
-app.use(shopRoutes);
+app.use("/shop", shopRoutes);
+app.use("/", (req, res) => {
+  res.redirect("/shop");
+});
 
 // Error handling
 app.use(errorController.get404);

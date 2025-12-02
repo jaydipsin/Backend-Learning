@@ -1,36 +1,31 @@
-const Product = require("../models/product");
+const Product = require('../models/product');
 
-exports.getAddProductPage = (req, res) => {
-  res.render("admin/add-product", {
-    pageTitle: "Add Product",
-    path: "/admin/add-product",
-    formCSS: true,
+exports.getAddProduct = (req, res, next) => {
+  res.render('admin/add-product', {
+    pageTitle: 'Add Product',
+    path: '/admin/add-product',
+    formsCSS: true,
     productCSS: true,
-    activeAddProduct: true,
+    activeAddProduct: true
   });
 };
 
-exports.postAddProduct = (req, res) => {
-  const productData = {
-    title: req.body.title,
-    price: req.body.price,
-    imageUrl: req.body.imageUrl,
-    description: req.body.description,
-  };
-  console.log("This is the product : ", productData);
-
-  const product = new Product(productData);
+exports.postAddProduct = (req, res, next) => {
+  const title = req.body.title;
+  const imageUrl = req.body.imageUrl;
+  const price = req.body.price;
+  const description = req.body.description;
+  const product = new Product(title, imageUrl, description, price);
   product.save();
-  res.redirect("/shop/products");
+  res.redirect('/');
 };
 
-exports.getAllProduct = (req, res, next) => {
-  Product.fetchAll((productsArr) => {
-    const products = productsArr;
-    res.render("admin/product-list", {
-      prod: products,
-      pageTitle: "Admin",
-      path: "/admin/products",
+exports.getProducts = (req, res, next) => {
+  Product.fetchAll(products => {
+    res.render('admin/products', {
+      prods: products,
+      pageTitle: 'Admin Products',
+      path: '/admin/products'
     });
   });
 };

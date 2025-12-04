@@ -20,10 +20,10 @@ getFileData = (cb) => {
 
 module.exports = class cart {
   productDetail;
-  static addProductToCart(id) {
+  static addProductToCart(id, price) {
     getFileData((cartProducts) => {
       console.log(cartProducts);
-      this.findProductFromFile(id);
+
       let exsistingProduct;
       if (cartProducts?.products?.length) {
         exsistingProduct = cartProducts.products.find((p) => p.id === id);
@@ -31,15 +31,14 @@ module.exports = class cart {
 
       if (exsistingProduct) {
         exsistingProduct.quantity += 1;
-        cartProducts.totalPrice +=
-          this.productDetail.price * exsistingProduct.quantity;
+        cartProducts.totalPrice += price ;
       } else {
         cartProducts.products.push({
           id,
           quantity: 1,
-          price: this.productDetail.price,
+          price,
         });
-        cartProducts.totalPrice += this.productDetail.price;
+        cartProducts.totalPrice += price;
       }
       fs.writeFile(p, JSON.stringify(cartProducts), (err) => {
         console.log(err);
@@ -47,10 +46,13 @@ module.exports = class cart {
     });
   }
 
-  static findProductFromFile(id) {
-    Products.findById(id, (product) => (this.productDetail = product));
-    return this.productDetail;
-  }
+  // static findProductFromFile(id) {
+  //   Products.findById(id, (product) => {
+  //     this.productDetail = product;
+  //   });
+  //   console.log("productDetail : ", this.productDetail);
+  //   return this.productDetail;
+  // }
 
   static fetchAllProducts(cb) {
     getFileData(cb);

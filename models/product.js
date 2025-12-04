@@ -9,10 +9,10 @@ const p = path.join(
 
 const getProductsFromFile = (cb) => {
   fs.readFile(p, (err, fileContent) => {
-    if (err) {
-      cb([]);
-    } else {
+    try{
       cb(JSON.parse(fileContent));
+    }catch(err){
+      cb([]);
     }
   });
 };
@@ -42,6 +42,7 @@ module.exports = class Product {
   static findById(id, cb) {
     getProductsFromFile((products) => {
       const product = products.find((p) => p.id === id);
+      console.log("Product : ", product);
       cb(product);
     });
   }

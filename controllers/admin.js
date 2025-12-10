@@ -1,5 +1,6 @@
 // const e = require("express");
 const Product = require("../models/product");
+const Cart = require("../models/cart");
 
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/add-edit-product", {
@@ -46,7 +47,9 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const id = req.body.id;
-  Product.deleteById(id);
+  Product.deleteById(id, () => {
+    Cart.deleteProductFromCart(id);
+  });
   res.redirect("/admin/products");
 };
 

@@ -4,14 +4,14 @@
 <body>
     <%- include('../includes/navigation.ejs') %>
 
-    <% if (prods.length > 0) { %>
+    <% if (prods.products.length > 0) { %>
         <ul>
-            <% for (let product of prods) { %>
+            <% for (let product of prods.products) { %>
                 <li>
                     <div style="display: flex; gap: 12px; align-items: center;">
                         <div>
                             <h2><%= product.title %></h2>
-                            <p>Quantity: <%= product.qty %></p>
+                            <p>Quantity: <%= product.quantity %></p>
                             <p>Price: $<%= product.price %></p>
                         </div>
 
@@ -19,9 +19,12 @@
                             <input type="hidden" name="id" value="<%= product.id %>">
                             <button class="btn" type="submit">Remove from Cart</button>
                         </form>
+
+                        
                     </div>
                 </li>
-            <% } %>
+                <% } %>
+                <p>Total: $<%= prods.totalPrice %></p>
         </ul>
     <% } else { %>
         <h1>No Products in Cart!</h1>
